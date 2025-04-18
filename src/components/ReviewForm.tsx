@@ -5,9 +5,10 @@ import { addReview } from "@/lib/clientApi";
 
 type Props = {
     productId: string;
+    onSuccess?: () => void;
 };
 
-export default function AddReviewForm({ productId }: Props) {
+export default function AddReviewForm({ productId, onSuccess }: Props) {
     const [author, setAuthor] = useState("");
     const [rating, setRating] = useState(5);
     const [comment, setComment] = useState("");
@@ -20,17 +21,14 @@ export default function AddReviewForm({ productId }: Props) {
         setSuccess(false);
 
         try {
-            await addReview({
-                productId,
-                author,
-                rating,
-                comment,
-            });
+            await addReview({ productId, author, rating, comment });
 
             setAuthor("");
             setRating(5);
             setComment("");
             setSuccess(true);
+
+            onSuccess?.();
         } catch (err) {
             console.error("Error submitting review:", err);
         } finally {

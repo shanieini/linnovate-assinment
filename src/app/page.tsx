@@ -7,7 +7,6 @@ export default async function HomePage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-sky-100 via-white to-blue-50 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900 text-zinc-800 dark:text-white">
       <section className="max-w-7xl mx-auto px-6 py-16 sm:px-10 lg:px-16">
-        {/* כותרת עליונה */}
         <header className="mb-16 text-center">
           <h1 className="text-5xl font-extrabold tracking-tight text-indigo-700 dark:text-indigo-300 mb-4">
             🛍️ Product Catalog
@@ -17,8 +16,6 @@ export default async function HomePage() {
           </p>
           <div className="h-1 w-20 bg-indigo-600 dark:bg-indigo-400 mt-6 mx-auto rounded-full" />
         </header>
-
-        {/* רשימת מוצרים */}
         {products.length > 0 ? (
           <ProductList products={products} />
         ) : (

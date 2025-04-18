@@ -1,6 +1,4 @@
-// app/api/reviews/route.ts
 import { NextResponse } from "next/server";
-import { ObjectId } from "mongodb";
 import clientPromise from "@/lib/db";
 
 export async function POST(req: Request) {
@@ -13,7 +11,7 @@ export async function POST(req: Request) {
 
         // 1. שמירת הביקורת
         const newReview = {
-            productId: new ObjectId(productId),
+            productId: productId,
             author,
             rating,
             comment,
@@ -24,7 +22,7 @@ export async function POST(req: Request) {
 
         // 2. חישוב ממוצע דירוגים חדשים
         const agg = await db.collection("reviews").aggregate([
-            { $match: { productId: new ObjectId(productId) } },
+            { $match: { productId: productId } },
             { $group: { _id: null, avgRating: { $avg: "$rating" } } },
         ]).toArray();
 
@@ -32,7 +30,7 @@ export async function POST(req: Request) {
 
         // 3. עדכון מוצר עם ממוצע חדש
         await db.collection("products").updateOne(
-            { _id: new ObjectId(productId) },
+            { _id: productId },
             { $set: { rating: newAvg } }
         );
 

@@ -5,16 +5,22 @@ import ReviewForm from "./ReviewForm";
 
 type Props = {
     productId: string;
+    onReviewAdded?: () => void;
 };
 
-export default function AddReviewModal({ productId }: Props) {
+export default function AddReviewModal({ productId, onReviewAdded }: Props) {
     const [open, setOpen] = useState(false);
+
+    const handleSuccess = () => {
+        setOpen(false);
+        onReviewAdded?.();
+    };
 
     return (
         <>
             <button
                 onClick={() => setOpen(true)}
-                className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition w-full sm:w-auto"
+                className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition w-full sm:w-auto cursor-pointer"
             >
                 Add Review
             </button>
@@ -28,8 +34,10 @@ export default function AddReviewModal({ productId }: Props) {
                         >
                             ✕
                         </button>
-                        <h3 className="text-xl font-bold mb-4 text-zinc-900 dark:text-white">הוספת ביקורת</h3>
-                        <ReviewForm productId={productId} />
+                        <h3 className="text-xl font-bold mb-4 text-zinc-900 dark:text-white">
+                            הוספת ביקורת
+                        </h3>
+                        <ReviewForm productId={productId} onSuccess={handleSuccess} />
                     </div>
                 </div>
             )}
