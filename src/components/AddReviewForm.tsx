@@ -62,7 +62,7 @@ export default function AddReviewForm({ productId, onSuccess }: AddReviewFormPro
                             onClick={() => setRating(num)}
                             onMouseEnter={() => setHoverRating(num)}
                             onMouseLeave={() => setHoverRating(null)}
-                            className="focus:outline-none"
+                            className="focus:outline-none cursor-pointer"
                             aria-label={`Rate ${num} stars`}
                         >
                             <span
@@ -94,7 +94,7 @@ export default function AddReviewForm({ productId, onSuccess }: AddReviewFormPro
             <button
                 type="submit"
                 disabled={loading}
-                className="bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700 disabled:opacity-50"
+                className="bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700 disabled:opacity-50  cursor-pointer"
             >
                 {loading ? "Submitting..." : "Submit Review"}
             </button>

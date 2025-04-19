@@ -22,7 +22,7 @@ export default function AddReviewModal({ productId, onReviewAdded }: AddReviewMo
             </button>
 
             {open && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 h-dvh">
                     <div className="bg-white dark:bg-zinc-900 p-6 rounded-xl w-full max-w-md mx-4 sm:mx-0 relative shadow-xl">
                         <button
                             onClick={() => setOpen(false)}
