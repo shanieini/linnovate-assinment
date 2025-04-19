@@ -31,7 +31,7 @@ export default function AddReviewModal({ productId, onReviewAdded }: AddReviewMo
                             ✕
                         </button>
                         <h3 className="text-xl font-bold mb-4 text-zinc-900 dark:text-white">
-                            הוספת ביקורת
+                            Add Review
                         </h3>
                         <AddReviewForm productId={productId} onSuccess={handleSuccess} />
                     </div>

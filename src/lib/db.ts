@@ -8,11 +8,10 @@ if (!uri) {
 
 const options = {};
 
-let client;
-let clientPromise: Promise<MongoClient>;
+let client: MongoClient;
 
 declare global {
-    var _mongoClientPromise: Promise<MongoClient>;
+    var _mongoClientPromise: Promise<MongoClient> | undefined;
 }
 
 if (!global._mongoClientPromise) {
@@ -21,5 +20,5 @@ if (!global._mongoClientPromise) {
     global._mongoClientPromise = client.connect();
 }
 
-clientPromise = global._mongoClientPromise;
-export default clientPromise;
+const exportedClientPromise = global._mongoClientPromise!;
+export default exportedClientPromise;
