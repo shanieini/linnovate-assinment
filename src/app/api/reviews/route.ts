@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
-import clientPromise from "@/lib/db";
+import { getDb } from "@/lib/db";
 
 export async function POST(req: Request) {
     try {
         const body = await req.json();
         const { productId, author, rating, comment } = body;
-        const client = await clientPromise;
-        const db = client.db("catalog");
+
+        const db = await getDb();
+
         const newReview = {
             productId: new ObjectId(productId),
             author,
@@ -30,9 +31,15 @@ export async function POST(req: Request) {
             { $set: { rating: newAvg } }
         );
 
-        return NextResponse.json({ message: "Review added successfully", review: newReview }, { status: 201 });
+        return NextResponse.json(
+            { message: "Review added successfully", review: newReview },
+            { status: 201 }
+        );
     } catch (err) {
         console.error("Error adding review:", err);
-        return NextResponse.json({ message: "Failed to add review" }, { status: 500 });
+        return NextResponse.json(
+            { message: "Failed to add review" },
+            { status: 500 }
+        );
     }
 }

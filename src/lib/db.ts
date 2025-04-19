@@ -1,25 +1,26 @@
-/* eslint-disable */
 import { MongoClient } from "mongodb";
 
 const uri = process.env.MONGODB_URI;
-
-if (!uri) {
-    throw new Error("MONGODB_URI is missing from .env.local");
-}
+if (!uri) throw new Error("❌ Missing MONGODB_URI environment variable");
 
 const options = {};
 
 let client: MongoClient;
+let clientPromise: Promise<MongoClient>;
 
 declare global {
+    // משמרים את הלקוח בין reloadים ב-dev
     var _mongoClientPromise: Promise<MongoClient> | undefined;
 }
 
 if (!global._mongoClientPromise) {
-    console.log("🔌 Connecting to MongoDB...");
     client = new MongoClient(uri, options);
     global._mongoClientPromise = client.connect();
 }
 
-const exportedClientPromise = global._mongoClientPromise!;
-export default exportedClientPromise;
+clientPromise = global._mongoClientPromise;
+
+export async function getDb() {
+    const client = await clientPromise;
+    return client.db();
+}

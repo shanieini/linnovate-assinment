@@ -1,19 +1,16 @@
-import clientPromise from "@/lib/db";
 import { ObjectId } from "mongodb";
 import { Product } from "@/models/product";
 import { Review } from "@/models/review";
+import { getDb } from "./db";
 import { cache } from "react";
 
 export async function getProducts(): Promise<Product[]> {
     try {
-        const client = await clientPromise;
-        const db = client.db("catalog");
-
+        const db = await getDb();
         const products = await db
             .collection<Product>("products")
             .find()
             .toArray();
-
         return products;
     } catch (error) {
         console.error("Failed to fetch products:", error);
@@ -23,13 +20,10 @@ export async function getProducts(): Promise<Product[]> {
 
 export async function getProductById(id: string): Promise<Product | null> {
     try {
-        const client = await clientPromise;
-        const db = client.db("catalog");
-
+        const db = await getDb();
         const product = await db
             .collection<Product>("products")
             .findOne({ _id: new ObjectId(id) });
-
         return product;
     } catch (error) {
         console.error("Failed to fetch product by ID:", error);
@@ -40,15 +34,12 @@ export async function getProductById(id: string): Promise<Product | null> {
 export const getReviewsByProductId = cache(
     async (productId: string): Promise<Review[]> => {
         try {
-            const client = await clientPromise;
-            const db = client.db("catalog");
-
+            const db = await getDb();
             const reviews = await db
                 .collection<Review>("reviews")
                 .find({ productId: new ObjectId(productId) })
                 .sort({ createdAt: -1 })
                 .toArray();
-
             return reviews;
         } catch (error) {
             console.error("Failed to fetch reviews:", error);
