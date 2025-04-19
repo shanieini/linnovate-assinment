@@ -1,13 +1,10 @@
-import { Product } from "@/models/product";
 import Image from "next/image";
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
+import { ProductCardProps } from "@/types/productTypes";
 
-type Props = {
-    product: Product;
-};
 
-export default function ProductCard({ product }: Props) {
+export default function ProductCard({ product }: ProductCardProps) {
     return (
         <Link
             href={`/product/${product._id}`}

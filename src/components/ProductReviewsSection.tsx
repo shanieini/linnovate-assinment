@@ -4,28 +4,27 @@ import ReviewList from "./ReviewList";
 import AddReviewModal from "./AddReviewModal";
 import { useEffect, useState } from "react";
 import { fetchProduct, fetchProductReviews } from "@/lib/clientApi";
+import type { Review } from "@/models/review";
+import { ProductReviewsSectionProps } from "@/types/productTypes";
 
-type Props = {
-    productId: string;
-};
 
-export default function ProductReviewsSection({ productId }: Props) {
-    const [reviews, setReviews] = useState<any[]>([]);
-    const [rating, setRating] = useState<number>(0);
+export default function ProductReviewsSection({ productId }: ProductReviewsSectionProps) {
+    const [reviews, setReviews] = useState<Review[]>([]);
+    const [rating, setRating] = useState<number | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
     const fetchData = async () => {
         setLoading(true);
         try {
-            const [reviews, product] = await Promise.all([
+            const [fetchedReviews, product] = await Promise.all([
                 fetchProductReviews(productId),
                 fetchProduct(productId),
             ]);
 
-            setReviews(reviews);
+            setReviews(fetchedReviews);
             setRating(product.rating);
         } catch (err) {
-            console.error("❌ Failed to fetch reviews or product:", err);
+            console.error("Failed to fetch reviews or product:", err);
         } finally {
             setLoading(false);
         }
@@ -33,9 +32,14 @@ export default function ProductReviewsSection({ productId }: Props) {
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [productId]);
 
-    const displayRating = Number.isInteger(rating) ? rating : rating.toFixed(1);
+    const displayRating =
+        typeof rating === "number"
+            ? Number.isInteger(rating)
+                ? rating
+                : rating.toFixed(1)
+            : "N/A";
 
     return (
         <div className="bg-white dark:bg-zinc-900 rounded-3xl shadow p-6 sm:p-8 max-h-[640px] overflow-y-auto flex flex-col">
@@ -58,7 +62,7 @@ export default function ProductReviewsSection({ productId }: Props) {
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
                     <AddReviewModal productId={productId} onReviewAdded={fetchData} />
 
-                    {!loading && (
+                    {!loading && typeof rating === "number" && (
                         <span className="text-yellow-500 text-lg">
                             {"⭐".repeat(Math.round(rating))}
                             <span className="text-sm text-zinc-500 dark:text-zinc-400 ml-1">

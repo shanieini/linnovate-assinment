@@ -1,14 +1,9 @@
 import { getProductById } from "@/lib/api";
 import { notFound } from "next/navigation";
 import ProductReviewsSection from "@/components/ProductReviewsSection";
+import { ProductPageParams } from "@/types/productTypes";
 
-type Props = {
-    params: {
-        id: string;
-    };
-};
-
-export default async function ProductPage({ params }: Props) {
+export default async function ProductPage({ params }: ProductPageParams) {
     const product = await getProductById(params.id);
 
     if (!product) return notFound();

@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🛍️ Product Catalog App
 
-## Getting Started
+A modern, responsive product catalog built with Next.js, featuring product listings, average ratings, and a client-side review system.
 
-First, run the development server:
+## 🚀 Technologies Used
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Next.js 14** (App Router)
+- **TypeScript**
+- **Tailwind CSS** for modern, responsive styling
+- **MongoDB** for database
+- **SWR** for client-side data fetching and cache revalidation
+- **Vitest** for unit and integration testing
+- **Playwright** for end-to-end testing
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 🧪 Testing Overview
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This project includes 3 types of tests:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+#### 1. **Unit Tests** (with Vitest)
+- Purpose: Test individual pure functions or small logic units.
+- Location: Usually inside `src/lib/utils/`.
+- Example: `calculateAverageRating.test.ts`
+- Run with: npx vitest run
+#### 2. **Integration Tests** (with Vitest + React Testing Library)
+- Purpose: Test how multiple units (e.g., components + logic) work together in React.
+- Location: Typically inside src/components/.
+- Example: AddReviewForm.test.tsx
+- Run with: npx vitest run
+#### 3. **E2E (End-to-End) Tests** (with Playwright)
+- Purpose: Simulate real user behavior in a browser (e.g., clicking buttons, submitting forms, navigating pages).
+- Location: In the e2e/ directory at the root of the project.
+- Example: add-review.spec.ts
+- Run with: npx playwright test
 
-## Learn More
+## ▶️ Getting Started
 
-To learn more about Next.js, take a look at the following resources:
+Follow these steps to run the project locally:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- npm install
+- npm run dev

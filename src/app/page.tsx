@@ -1,8 +1,12 @@
-import { getProducts } from "@/lib/api";
-import ProductList from "@/components/ProductList";
+"use client";
 
-export default async function HomePage() {
-  const products = await getProducts();
+import useSWR from "swr";
+import ProductList from "@/components/ProductList";
+import { Product } from "@/models/product";
+import { fetchProducts } from "@/lib/clientApi";
+
+export default function HomePage() {
+  const { data: products, error, isLoading } = useSWR<Product[]>("/api/products", fetchProducts);
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-sky-100 via-white to-blue-50 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900 text-zinc-800 dark:text-white">
@@ -16,12 +20,17 @@ export default async function HomePage() {
           </p>
           <div className="h-1 w-20 bg-indigo-600 dark:bg-indigo-400 mt-6 mx-auto rounded-full" />
         </header>
-        {products.length > 0 ? (
+
+        {isLoading ? (
+          <div className="flex justify-center items-center h-40">
+            <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : error ? (
+          <p className="text-center text-red-500">שגיאה בטעינת מוצרים</p>
+        ) : products && products.length > 0 ? (
           <ProductList products={products} />
         ) : (
-          <p className="text-center text-zinc-500 dark:text-zinc-400">
-            No products found.
-          </p>
+          <p className="text-center text-zinc-500 dark:text-zinc-400">No products found.</p>
         )}
       </section>
     </main>
